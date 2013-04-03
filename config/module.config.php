@@ -12,7 +12,7 @@ return array(
         'routes' => array(
             // This defines the hostname route which forms the base
             // of each "child" route
-            'dp' => array(
+            'departamento-pessoal' => array(
                 'type' => 'literal',
                 'options' => array(
                     'route' => '/dp',
