@@ -1,5 +1,7 @@
 <?php
 
+namespace DP;
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -17,9 +19,34 @@ return array(
                 'options' => array(
                     'route' => '/dp',
                     'defaults' => array(
-                       // '__NAMESPACE__' => 'DP\Controller',
                         'controller' => 'DP\Controller\Index',
                         'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'convite-hora-extra' => array(
+                        'type' => 'Literal',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route' => '/convite-hora-extra',
+                            'defaults' => array(
+                                'controller' => 'DP\Controller\ConviteHoraExtra',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'child_routes' => array(
+                            'single-store' => array(
+                                'type' => 'Literal',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/convite-individual',
+                                    'defaults' => array(
+                                        'action' => 'storesingle',
+                                    ),
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -28,6 +55,15 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'CHEAprov' => function($sm) {
+                $user = $sm->get('Auth')->getStorage()->read();
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+               
+                $convites = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$user['displayname']}' and Convite.lido=0 order by Convite.idconvitehoraextra DESC");
+                $result = $convites->getResult();
+
+                return $result;
+            },
         ),
     ),
     'translator' => array(
@@ -42,7 +78,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'DP\Controller\Index' => 'DP\Controller\IndexController'
+            'DP\Controller\Index' => 'DP\Controller\IndexController',
+            'DP\Controller\ConviteHoraExtra' => 'DP\Controller\ConviteHoraExtraController',
         ),
     ),
     'view_manager' => array(
@@ -59,6 +96,20 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
         ),
     ),
 );
