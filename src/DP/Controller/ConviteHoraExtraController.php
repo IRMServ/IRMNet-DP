@@ -107,6 +107,7 @@ class ConviteHoraExtraController extends AbstractActionController {
                 $che->setDataregistro();
                 $che->populate((array) $data);
                 $che->store();
+                return $this->redirect()->toRoute('convite-hora-extra/me');
             }
         }
         return new ViewModel(array('form' => $form));
@@ -143,6 +144,7 @@ class ConviteHoraExtraController extends AbstractActionController {
                 $che->setDataregistro();
                 $che->populate((array) $data);
                 $che->store();
+                return $this->redirect()->toRoute('convite-hora-extra/me');
             }
         }
         return new ViewModel(array('form' => $form, 'users' => $users));
