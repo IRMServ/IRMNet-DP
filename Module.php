@@ -3,8 +3,7 @@ namespace DP;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use Zend\I18n\Translator\Translator;
-use Zend\Validator\AbstractValidator;
+
 class Module
 {
     public function getConfig()
@@ -27,14 +26,7 @@ class Module
         $application = $e->getApplication();
         $services = $application->getServiceManager();
         $this->initDatabase($services);
-        $translator = new Translator();
-     $translator->addTranslationFile(
-      'gettext',
-    __DIR__.'/language/pt_BR.mo',
-    'default',
-    'pt_BR'
-     );
-         AbstractValidator::setDefaultTranslator($translator);
+    
     }
 
     protected function initDatabase(ServiceLocatorInterface $services) {
