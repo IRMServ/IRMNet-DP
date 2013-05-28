@@ -58,11 +58,15 @@ return array(
             'CHEAprov' => function($sm) {
                 $user = $sm->get('Auth')->getStorage()->read();
                 $em = $sm->get('doctrine.entitymanager.orm_default');
-               
-                $convites = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$user['displayname']}' and Convite.lido=0 order by Convite.idconvitehoraextra DESC");
-                $result = $convites->getResult();
+               if ($user) {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
 
-                return $result;
+                    $convites = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$user['displayname']}' and Convite.lido=0 order by Convite.idconvitehoraextra DESC");
+                    $result = $convites->getResult();
+
+                    return $result;
+                }
+                return 0;
             },
         ),
     ),
