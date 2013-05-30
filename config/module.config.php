@@ -10,6 +10,28 @@ namespace DP;
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 return array(
+    'acl' => array(
+        'DP' => array(
+            'TI' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'RH - ADP' => array(
+                'DP\Controller\Index:index',
+                'DP\Controller\ConviteHoraExtra:index',
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+        ),
+    ),
     'router' => array(
         'routes' => array(
             // This defines the hostname route which forms the base
@@ -57,8 +79,8 @@ return array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'CHEAprov' => function($sm) {
                 $user = $sm->get('Auth')->getStorage()->read();
-                $em = $sm->get('doctrine.entitymanager.orm_default');
-               if ($user) {
+                
+                if (isset($user['displayname'])) {
                     $em = $sm->get('doctrine.entitymanager.orm_default');
 
                     $convites = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$user['displayname']}' and Convite.lido=0 order by Convite.idconvitehoraextra DESC");
