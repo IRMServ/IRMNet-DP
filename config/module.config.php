@@ -13,6 +13,7 @@ return array(
     'acl' => array(
         'DP' => array(
             'TI' => array(
+                'DP\Controller\Index:index',
                 'DP\Controller\ConviteHoraExtra:me',
                 'DP\Controller\ConviteHoraExtra:aprovedme',
                 'DP\Controller\ConviteHoraExtra:aprovar',
