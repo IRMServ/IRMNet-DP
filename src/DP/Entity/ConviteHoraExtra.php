@@ -54,7 +54,7 @@ class ConviteHoraExtra {
 
     /**
      * @Annotation\Type("Zend\Form\Element\Text")
-      * @Annotation\AllowEmpty(true)
+     * @Annotation\AllowEmpty(true)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
      * @Annotation\Options({"label":"Nome: "})
@@ -227,17 +227,6 @@ class ConviteHoraExtra {
 
     public function setSubmit($submit) {
         $this->submit = $submit;
-    }
-
-    public function toArray() {
-        $prop = array_values(get_class_methods(get_class($this)));
-        $data = array();
-        foreach ($prop as $p => $v) {
-            if (substr($v, 0, 3) == 'get') {
-                $data[substr($v, 3, strlen($v))] = call_user_func(array($this, $v));
-            }
-        }
-        return $data;
     }
 
     public function getAll() {
