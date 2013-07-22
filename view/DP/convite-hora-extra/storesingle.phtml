@@ -1,0 +1,25 @@
+<script src="/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/datepicker.css"/>
+<script>
+    $(document).ready(function() {
+
+        $("input[name='datainicio'],input[name='datafim']").datepicker({
+            format: 'dd/mm/yy'
+        });
+    });
+</script>
+<div class="row-fluid">
+
+    <?php
+    $form = $this->form;
+
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+    echo $this->formCollection($form);
+    echo $this->form()->closeTag();
+    ?> 
+    <div class="alert alert-error">       
+        <strong>Importante!</strong> Conforme o artigo 59 da CLT, só é permitido ao colaborador trabalhar 2 horas excedentes ao seu expediente.
+    </div>
+</div>
