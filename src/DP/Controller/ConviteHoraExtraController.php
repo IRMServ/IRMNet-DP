@@ -13,7 +13,7 @@ namespace DP\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Form\Annotation\AnnotationBuilder;
-use DP\Entity\ConviteHoraExtra;
+use DP\Entity\Convitehoraextra;
 use Zend\Debug\Debug;
 
 class ConviteHoraExtraController extends AbstractActionController {
@@ -28,17 +28,35 @@ class ConviteHoraExtraController extends AbstractActionController {
     }
 
     public function indexAction() {
+
+        $mespass = new \DateTime();
+        $now = $mespass->format("Y-m") . '-20';
+        $mes = $mespass->sub(new \DateInterval('P1M'))->format('Y-m') . '-21';
+
+//        $mes = $mespass->format('y-m');
+//        Debug::dump($mes );
+//        Debug::dump($now );
         $em = $this->getEntityManager();
-        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where Convite.aprovado=1  and Convite.dataregistro like '%2013-05%' order by Convite.idconvitehoraextra DESC");
+        //$lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where Convite.aprovadoger=1 and Convite.aprovadorose=1  and Convite.dataregistro like '%{$mes}%' order by Convite.idconvitehoraextra DESC");
+        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where Convite.dataregistro between '{$mes}' and '{$now}' and Convite.aprovadoger=1 and Convite.aprovadorose=1 order by Convite.idconvitehoraextra DESC");
         $list = $lista->getResult();
+        //Debug::dump($list);
+//       
+//        $meslist = $meslista->getResult();
+//        Debug::dump($meslist);
 
         return new ViewModel(array('lista' => $list));
+    }
+
+    public function exportarAction() {
+        
     }
 
     public function meAction() {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
         $em = $this->getEntityManager();
-        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.solicitante='{$as['displayname']}' and Convite.dataregistro like '%2013-05%' order by Convite.idconvitehoraextra DESC");
+
+        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.solicitante='{$as['displayname']}'  order by Convite.idconvitehoraextra DESC");
         $list = $lista->getResult();
 
         return new ViewModel(array('lista' => $list));
@@ -47,7 +65,7 @@ class ConviteHoraExtraController extends AbstractActionController {
     public function aprovedmeAction() {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
         $em = $this->getEntityManager();
-        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$as['displayname']}' and Convite.lido = 0 order by Convite.idconvitehoraextra DESC");
+        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$as['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
         $list = $lista->getResult();
 
         return new ViewModel(array('lista' => $list));
@@ -56,17 +74,28 @@ class ConviteHoraExtraController extends AbstractActionController {
     public function aprovarAction() {
 
         $id = $this->params()->fromRoute('id');
+
         $em = $this->getEntityManager();
-        $con = new ConviteHoraExtra($em);
+        $con = new Convitehoraextra($em);
         $convite = $con->getById($id);
-        $convite->setEm($em);
-        $convite->setLido(1);
-        $convite->setAprovado(1);
+        $convite->setEntityManager($em);
+
+        $convite->setAprovadoger(1);
         $convite->store();
-        $userdata = $this->getServiceLocator()->get('Auth')->getStorage()->read();
-        $userdata['convites-hora-extra'] = count($this->getServiceLocator()->get('CHEAprov'));
-        $this->getServiceLocator()->get('Auth')->getStorage()->write($userdata);
-        return $this->redirect()->toRoute('convite-hora-extra/aprovedme');
+        $auth = $this->getServiceLocator()->get('Auth')->getStorage();
+        $userdata = $auth->read();
+        $user = array();
+        $user['displayname'] = $userdata['displayname'];
+        $user['email'] = $userdata['email'];
+        $user['departamento'] = $userdata['departamento'];
+        $user['gerente-mail'] = $userdata['gerente-mail'];
+        $user['convites-hora-extra'] = $userdata['convites-hora-extra'];
+        $user['gerente'] = $userdata['gerente'];
+
+        $user['convites-hora-extra'] = $this->getServiceLocator()->get('CHEAprov');
+        $auth->write($user);
+
+        $this->redirect()->toRoute('convite-hora-extra/aprovedme');
     }
 
     public function negarAction() {
@@ -78,33 +107,55 @@ class ConviteHoraExtraController extends AbstractActionController {
         $convite->setEm($em);
         $convite->setLido(1);
         $convite->store();
-        $userdata = $this->getServiceLocator()->get('Auth')->getStorage()->read();
-        $userdata['convites-hora-extra'] = count($this->getServiceLocator()->get('CHEAprov'));
-        $this->getServiceLocator()->get('Auth')->getStorage()->write($userdata);
-        return $this->redirect()->toRoute('convite-hora-extra/aprovedme');
+        $auth = $this->getServiceLocator()->get('Auth')->getStorage();
+        $userdata = $auth->read();
+        $user = array();
+        $user['displayname'] = $userdata['displayname'];
+        $user['email'] = $userdata['email'];
+        $user['departamento'] = $userdata['departamento'];
+        $user['gerente-mail'] = $userdata['gerente-mail'];
+        $user['convites-hora-extra'] = $userdata['convites-hora-extra'];
+        $user['gerente'] = $userdata['gerente'];
+
+        $user['convites-hora-extra'] = $this->getServiceLocator()->get('CHEAprov');
+        $auth->write($user);
+
+        $this->redirect()->toRoute('convite-hora-extra/aprovedme');
     }
 
     public function storesingleAction() {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
+//
+        $auth = $this->getServiceLocator()->get('Auth');
+        $userdata = $auth->getStorage()->read();
+        $em_alt = $this->getServiceLocator()->get('doctrine.entitymanager.orm_alternative');
+        $dadossgiquery = $em_alt->createQuery("SELECT func.nom_Funcionario as nome,func.num_Matricula as matricula  FROM DP\Entity\Funcionarios func where func.nom_Funcionario like '{$userdata['displayname']}' and func.bl_Ativo=1 and func.num_Matricula<>0");
+
+
+        $dadossgi = $dadossgiquery->getResult();
+
 
         $afb = new AnnotationBuilder();
-        $che = new ConviteHoraExtra($this->getEntityManager());
+        $che = new Convitehoraextra($this->getEntityManager());
         $form = $afb->createForm($che);
 
 
+//
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $data['solicitante'] = $as['displayname'];
+
                 $data['nome'] = $as['displayname'];
+                $data['solicitante'] = $as['displayname'];
                 $data['supervisor'] = $as['gerente'];
                 $data['lido'] = 0;
-                $data['aprovado'] = 0;
+                $data['aprovadoger'] = 0;
+                $data['aprovadorose'] = 0;
+                $data['matricula'] = $dadossgi[0]['matricula'];
+                $data['datainicio'] = new \DateTime(implode('-', array_reverse(explode('/', $data['datainicio']))));
+                $data['datafim'] = new \DateTime(implode('-', array_reverse(explode('/', $data['datafim']))));
 
-                $data['datainicio'] = implode('-', array_reverse(explode('/', $data['datainicio'])));
-                $data['datafim'] = implode('-', array_reverse(explode('/', $data['datafim'])));
-                $che->setDataregistro();
                 $che->populate((array) $data);
                 $che->store();
                 return $this->redirect()->toRoute('convite-hora-extra/me');
@@ -119,7 +170,7 @@ class ConviteHoraExtraController extends AbstractActionController {
         $afb = new AnnotationBuilder();
         $che = new ConviteHoraExtra($this->getEntityManager());
         $form = $afb->createForm($che);
-        $users = $this->getServiceLocator()->get('UsersPair');
+        $users = $this->getServiceLocator()->get('UsersDPPair');
 
 
         if ($this->getRequest()->isPost()) {

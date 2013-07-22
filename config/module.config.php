@@ -14,6 +14,9 @@ return array(
         'DP' => array(
             'TI' => array(
                 'DP\Controller\Index:index',
+         
+                'DP\Controller\ConviteHoraExtra:index',
+                'DP\Controller\ConviteHoraExtra:exportar',
                 'DP\Controller\ConviteHoraExtra:me',
                 'DP\Controller\ConviteHoraExtra:aprovedme',
                 'DP\Controller\ConviteHoraExtra:aprovar',
@@ -23,7 +26,200 @@ return array(
             ),
             'RH - ADP' => array(
                 'DP\Controller\Index:index',
+                 'DP\Controller\ConviteHoraExtra:exportar',
                 'DP\Controller\ConviteHoraExtra:index',
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'CONTROLADORIA' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'ALMOXARIFADO' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'COMPRAS' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'DIRETORIA' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'FABRICAÇÃO' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'FINANCEIRO - CONTÁBIL' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'FISCAL' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'LOGÍSTICA' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'OCTG - ADMINISTRATIVO' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'OCTG - INSPEÇÃO' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'OCTG - MACHINE SHOP' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'OCTG - VÁLVULAS' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'OPERACIONAL - OFFSHORE' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'PROJETOS ESPECIAIS' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'QUALIDADE' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'RELATÓRIO' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'RH' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'RH - ADP' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'RH - GT' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'RH - T&D' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'SMS' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'TRANSPORTE' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'PLANEJAMENTO' => array(
+                'DP\Controller\ConviteHoraExtra:me',
+                'DP\Controller\ConviteHoraExtra:aprovedme',
+                'DP\Controller\ConviteHoraExtra:aprovar',
+                'DP\Controller\ConviteHoraExtra:negar',
+                'DP\Controller\ConviteHoraExtra:storegroup',
+                'DP\Controller\ConviteHoraExtra:storesingle',
+            ),
+            'JURIDICO' => array(
                 'DP\Controller\ConviteHoraExtra:me',
                 'DP\Controller\ConviteHoraExtra:aprovedme',
                 'DP\Controller\ConviteHoraExtra:aprovar',
@@ -33,10 +229,11 @@ return array(
             ),
         ),
     ),
-    'router' => array(
+    'router' =>
+    array(
         'routes' => array(
-            // This defines the hostname route which forms the base
-            // of each "child" route
+// This defines the hostname route which forms the base
+// of each "child" route
             'departamento-pessoal' => array(
                 'type' => 'literal',
                 'options' => array(
@@ -69,6 +266,16 @@ return array(
                                     ),
                                 ),
                             ),
+                            'exportar' => array(
+                                'type' => 'Literal',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/export',
+                                    'defaults' => array(
+                                        'action' => 'exportar',
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -80,16 +287,35 @@ return array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'CHEAprov' => function($sm) {
                 $user = $sm->get('Auth')->getStorage()->read();
-                
+
                 if (isset($user['displayname'])) {
                     $em = $sm->get('doctrine.entitymanager.orm_default');
 
-                    $convites = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$user['displayname']}' and Convite.lido=0 order by Convite.idconvitehoraextra DESC");
+                    $convites = $em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where  Convite.supervisor like '{$user['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
                     $result = $convites->getResult();
 
-                    return $result;
+                    return count($result);
                 }
                 return 0;
+            },
+            
+            'FuncionarioPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $estado = new \DP\Entity\Funcionarios($em);
+                $estadoarray = array();
+                foreach ($estado->getAll() as $e) {
+                    $estadoarray[$e->getIdfuncionarios()] = $e->getNome();
+                }
+                return $estadoarray;
+            },
+            'UsersDPPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $estado = new \DP\Entity\Funcionarios($em);
+                $estadoarray = array();
+                foreach ($estado->getAll() as $e) {
+                    $estadoarray[$e->getMatricula()] = $e->getNome();
+                }
+                return $estadoarray;
             },
         ),
     ),
@@ -106,6 +332,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'DP\Controller\Index' => 'DP\Controller\IndexController',
+          
             'DP\Controller\ConviteHoraExtra' => 'DP\Controller\ConviteHoraExtraController',
         ),
     ),
@@ -124,6 +351,9 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ),
     'doctrine' => array(
         'driver' => array(
@@ -136,7 +366,24 @@ return array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
-            )
+            ),
+//            __NAMESPACE__ . '_driver_orm_alternative' => array(
+//                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+//                'cache' => 'array',
+//                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+//            ),
+//            'orm_alternative' => array(
+//                'drivers' => array(
+//                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver_alternative'
+//                )
+//            ),
+        ),
+    ),
+    'asset_manager' => array(
+        'resolver_configs' => array(
+            'paths' => array(
+                __DIR__ . '/../public',
+            ),
         ),
     ),
 );
