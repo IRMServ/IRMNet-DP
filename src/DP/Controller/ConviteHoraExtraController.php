@@ -83,7 +83,7 @@ class ConviteHoraExtraController extends AbstractActionController {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
         $em = $this->getEntityManager();
 
-        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.solicitante='{$as['displayname']}'  order by Convite.idconvitehoraextra DESC");
+        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.solicitante like '%{$as['displayname']}%' or Convite.nome like '%{$as['displayname']}%' order  by Convite.idconvitehoraextra DESC");
         $list = $lista->getResult();
 
         return new ViewModel(array('lista' => $list));
