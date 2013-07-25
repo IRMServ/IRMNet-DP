@@ -63,31 +63,37 @@
                     <th>Término da tarefa</th>                   
                     <th>Matrícula</th>
                     <th>Colaborador</th>
-                   
-                    
+
+
 
                 </tr>
             </thead>
             <tbody>
-                <?php
-             
-                foreach ($this->lista as $usuario): ?>
+                <?php foreach ($this->lista as $usuario): ?>
                     <tr>
 
                         <td><?php echo $usuario->getSolicitante(); ?></td>
-                        <td><?php echo $usuario->getDataregistro();; ?></td>
+                        <td><?php echo $usuario->getDataregistro();
+                ; ?></td>
                         <td><?php echo $usuario->getDatainicio(); ?></td>
                         <td><?php echo $usuario->getDatafim(); ?></td>
                         <td><?php echo $usuario->getMatricula(); ?></td>
                         <td><?php echo $usuario->getNome() ?></td>
-                        
-                                           
-                       
+
+
+
                     </tr>
                 <?php endforeach; ?>
 
             </tbody>
-            
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <a class='btn' href="<?php echo $this->url('departamento-pessoal/convite-hora-extra/exportar');?>" title='Fazer download da tabela'><i class="icon-download-alt"></i></a>
+                    </td>
+                </tr>
+            </tfoot>
+
 
         </table>
     </div>
