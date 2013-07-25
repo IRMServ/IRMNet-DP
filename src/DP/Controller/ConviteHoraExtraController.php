@@ -101,7 +101,7 @@ class ConviteHoraExtraController extends AbstractActionController {
     public function aprovarAction() {
 
         $id = $this->params()->fromRoute('id');
-        $auth = $this->getServiceLocator()->get('Auth')->getStorage();
+
         $em = $this->getEntityManager();
         $con = new Convitehoraextra($em);
         $convite = $con->getById($id);
@@ -111,7 +111,7 @@ class ConviteHoraExtraController extends AbstractActionController {
 
 
         $convite->store();
-
+        $auth = $this->getServiceLocator()->get('Auth')->getStorage();
         $userdata = $auth->read();
         $user = array();
         $user['displayname'] = $userdata['displayname'];
@@ -230,7 +230,7 @@ class ConviteHoraExtraController extends AbstractActionController {
                 $data['aprovadoger'] = 0;
                 $data['aprovadorose'] = 0;
 
-
+                
 
                 $che2->populate((array) $data);
                 $che2->store();
