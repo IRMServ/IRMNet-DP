@@ -2,6 +2,9 @@
 
 namespace DP;
 
+use Zend\Config\Config;
+use Zend\Debug\Debug;
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -14,7 +17,6 @@ return array(
         'DP' => array(
             'TI' => array(
                 'DP\Controller\Index:index',
-         
                 'DP\Controller\ConviteHoraExtra:index',
                 'DP\Controller\ConviteHoraExtra:exportar',
                 'DP\Controller\ConviteHoraExtra:me',
@@ -26,7 +28,7 @@ return array(
             ),
             'RH - ADP' => array(
                 'DP\Controller\Index:index',
-                 'DP\Controller\ConviteHoraExtra:exportar',
+                'DP\Controller\ConviteHoraExtra:exportar',
                 'DP\Controller\ConviteHoraExtra:index',
                 'DP\Controller\ConviteHoraExtra:me',
                 'DP\Controller\ConviteHoraExtra:aprovedme',
@@ -298,9 +300,8 @@ return array(
                 }
                 return 0;
             },
-            
             'FuncionarioPair' => function($sm) {
-                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $em = $sm->get('doctrine.entitymanager.orm_alternative');
                 $estado = new \DP\Entity\Funcionarios($em);
                 $estadoarray = array();
                 foreach ($estado->getAll() as $e) {
@@ -309,13 +310,19 @@ return array(
                 return $estadoarray;
             },
             'UsersDPPair' => function($sm) {
-                $em = $sm->get('doctrine.entitymanager.orm_default');
-                $estado = new \DP\Entity\Funcionarios($em);
-                $estadoarray = array();
-                foreach ($estado->getAll() as $e) {
-                    $estadoarray[$e->getMatricula()] = $e->getNome();
+                $em = $sm->get('doctrine.entitymanager.orm_alternative');
+                $ldap = $sm->get('Ldap');
+                $config = $sm->get('Config');
+                $user = $sm->get('Auth')->getStorage()->read();
+                $conf = new Config($config['ldap-config']);
+                
+                $result = $ldap->search("(&(objectClass=user)(memberof=CN={$user['departamento']},OU=Grupos,OU=IRM,DC=irmservices,DC=com))", $conf->server->baseDn, \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
+
+                $companheiros = array();
+                foreach ($result as $item) {
+                    $companheiros[] = $item['displayname'][0];
                 }
-                return $estadoarray;
+                return $companheiros;
             },
         ),
     ),
@@ -332,7 +339,6 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'DP\Controller\Index' => 'DP\Controller\IndexController',
-          
             'DP\Controller\ConviteHoraExtra' => 'DP\Controller\ConviteHoraExtraController',
         ),
     ),

@@ -1,45 +1,13 @@
-<style>
-    label[for='nome']{
-        display:none;
-    }
-    #descri{
-        margin-top:20px;
-    }
-</style>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+<script src="/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/datepicker.css"/>
 <script>
     $(document).ready(function() {
-        $("input[name='nome']").css({'display': 'none'}).parent().css({'display': "none"});
-        $("input[name='matricula']").css({'display': 'none'}).parent().css({'display': "none"}).val('123');
-
-        var elems = new Array();
-        $('#my-select').multiSelect(
-                {
-                    afterSelect: function(values)
-                    {
-                        var text = $("option[value='" + values + "']").text();
-                        elems.push(text);
-                        $('#descri').append("<label id='" + text + "'>Digite a matricula para " + text + ": <input  type='text' name='" + text + "'></label>");
-                    },
-                    afterDeselect: function(values)
-                    {
-                        var text = $("option[value='" + values + "']").text();
-                        //alert(text);
-                        $("#" + text).remove();
-                    }
-                });
+     
+        $('#my-select').multiSelect();
 
         $("table a").tooltip();
-        $("input[name='datainicio'],input[name='datafim']").datepicker({
-            dateFormat: 'dd/mm/yy',
-            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
-            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            nextText: 'Próximo',
-            prevText: 'Anterior'
+         $("input[name='datainicio'],input[name='datafim']").datepicker({
+            format: 'dd/mm/yyyy'
         });
 
     });
@@ -52,8 +20,8 @@
         <label>Motivo: <textarea name="motivo" required ></textarea></label><br/>
         
     <select multiple="multiple" id="my-select" name="my-select[]">
-        <?php foreach ($this->users as $user): ?>
-            <option value="<?php echo $user; ?>"><?php echo $user; ?></option>
+        <?php foreach ($this->users as $matricula => $nome): ?>
+            <option value="<?php echo $matricula.'-'.$nome; ?>"><?php echo $nome; ?></option>
         <?php endforeach; ?>
     </select> 
     <div id="descri">
