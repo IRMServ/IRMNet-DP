@@ -234,8 +234,6 @@ return array(
     'router' =>
     array(
         'routes' => array(
-// This defines the hostname route which forms the base
-// of each "child" route
             'departamento-pessoal' => array(
                 'type' => 'literal',
                 'options' => array(
@@ -294,6 +292,14 @@ return array(
                     $em = $sm->get('doctrine.entitymanager.orm_default');
 
                     $convites = $em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where  Convite.supervisor like '{$user['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
+                    $result = $convites->getResult();
+
+                    return count($result);
+                }
+                if (isset($user['displayname']) && $user['displayname'] == 'Rosemari Prandini') {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
+
+                    $convites = $em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where   Convite.aprovadorose = 0  order by Convite.idconvitehoraextra DESC");
                     $result = $convites->getResult();
 
                     return count($result);
@@ -372,17 +378,7 @@ return array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
-            ),
-//            __NAMESPACE__ . '_driver_orm_alternative' => array(
-//                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-//                'cache' => 'array',
-//                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
-//            ),
-//            'orm_alternative' => array(
-//                'drivers' => array(
-//                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver_alternative'
-//                )
-//            ),
+            ),//           
         ),
     ),
     'asset_manager' => array(
