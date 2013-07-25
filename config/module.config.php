@@ -298,6 +298,14 @@ return array(
 
                     return count($result);
                 }
+                if (isset($user['displayname']) && $user['displayname'] == 'Rosemari Prandini') {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
+
+                    $convites = $em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where   Convite.aprovadorose = 0  order by Convite.idconvitehoraextra DESC");
+                    $result = $convites->getResult();
+
+                    return count($result);
+                }
                 return 0;
             },
             'FuncionarioPair' => function($sm) {
