@@ -15,6 +15,8 @@ use Zend\View\Model\ViewModel;
 use Zend\Form\Annotation\AnnotationBuilder;
 use DP\Entity\Convitehoraextra;
 use Zend\Debug\Debug;
+use MailService\Service\ServiceTemplate;
+use MailService\Service\MailService;
 
 class ConviteHoraExtraController extends AbstractActionController {
 
@@ -83,7 +85,7 @@ class ConviteHoraExtraController extends AbstractActionController {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
         $em = $this->getEntityManager();
 
-        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.solicitante like '%{$as['displayname']}%' or Convite.nome like '%{$as['displayname']}%' order  by Convite.idconvitehoraextra DESC");
+        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.solicitante='{$as['displayname']}' or Convite.nome = '{$as['displayname']}'  order by Convite.idconvitehoraextra DESC");
         $list = $lista->getResult();
 
         return new ViewModel(array('lista' => $list));
@@ -92,7 +94,7 @@ class ConviteHoraExtraController extends AbstractActionController {
     public function aprovedmeAction() {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
         $em = $this->getEntityManager();
-        $lista = $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$as['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
+        $lista = $as['displayname'] == 'Rosemari Prandini' ? $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where   Convite.aprovadorose = 0  order by Convite.idconvitehoraextra DESC") : $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$as['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
         $list = $lista->getResult();
 
         return new ViewModel(array('lista' => $list));
@@ -107,7 +109,28 @@ class ConviteHoraExtraController extends AbstractActionController {
         $convite = $con->getById($id);
         $convite->setEntityManager($em);
         $userdat = $auth->read();
-        $userdat['displayname'] == 'Rosemari Prandini' ? $convite->setAprovadorose(1) : $convite->setAprovadoger(1);
+        if ($userdat['displayname'] == 'Rosemari Prandini') {
+            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_ROSE_APROVAR);
+            $mail->addFrom('webmaster@irmserv.com.br')
+                    ->addTo('prandini@irmserv.com.br')
+                    ->setSubject("[convite individual aprovado] Convite do dia {$convite->getDataregistro()}")
+                    ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+
+
+            $mail->send();
+            $convite->setAprovadorose(1);
+        } else {
+            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_GESTOR_APROVAR);
+            $mail->addFrom('webmaster@irmserv.com.br')
+                    ->addTo($userdat['email'])
+                    ->setSubject("[convite individual] Convite do dia {$convite->getDataregistro()}")
+                    ->setBody(array('gerente' => $store['displayname'], 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio, 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+
+
+            $mail->send();
+            $convite->setAprovadoger(1);
+        }
+
 
 
         $convite->store();
@@ -131,10 +154,10 @@ class ConviteHoraExtraController extends AbstractActionController {
 
         $id = $this->params()->fromRoute('id');
         $em = $this->getEntityManager();
-        $con = new ConviteHoraExtra($em);
+        $con = new Convitehoraextra($em);
         $convite = $con->getById($id);
-        $convite->setEm($em);
-        $convite->setLido(1);
+        $convite->setEntityManager($em);
+
         $convite->store();
         $auth = $this->getServiceLocator()->get('Auth')->getStorage();
         $userdata = $auth->read();
@@ -168,7 +191,7 @@ class ConviteHoraExtraController extends AbstractActionController {
         $che = new Convitehoraextra($this->getEntityManager());
         $form = $afb->createForm($che);
 
-
+        $date = new \DateTime('now');
 //
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
@@ -182,11 +205,29 @@ class ConviteHoraExtraController extends AbstractActionController {
                 $data['aprovadoger'] = 0;
                 $data['aprovadorose'] = 0;
                 $data['matricula'] = $dadossgi[0]['matricula'];
+                $inicio = $data['datainicio'];
+                $fim = $data['datafim'];
                 $data['datainicio'] = new \DateTime(implode('-', array_reverse(explode('/', $data['datainicio']))));
                 $data['datafim'] = new \DateTime(implode('-', array_reverse(explode('/', $data['datafim']))));
-
+                $store = $this->getServiceLocator()->get('Auth')->getStorage()->read();
                 $che->populate((array) $data);
                 $che->store();
+                $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL);
+                $mail->addFrom('webmaster@irmserv.com.br')
+                        ->addTo($store['email'])
+                        ->setSubject("[convite individual] Convite do dia {$date->format('d/m/Y')}")
+                        ->setBody(array('gerente' => $store['gerente'], 'aberto' => $date->format('d/m/Y'), 'sujeito' => $store['displayname'], 'inicio' => $inicio, 'fim' => $fim, 'motivo' => $data['motivo']));
+
+
+                $mail->send();
+                $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_GESTOR_APROVAR);
+                $mail->addFrom('webmaster@irmserv.com.br')
+                        ->addTo($store['gerente-mail'])
+                        ->setSubject("[convite individual] Convite do dia {$date->format('d/m/Y')}")
+                        ->setBody(array('gerente' => $store['gerente'], 'aberto' => $date->format('d/m/Y'), 'sujeito' => $store['displayname'], 'inicio' => $inicio, 'fim' => $fim, 'motivo' => $data['motivo']));
+
+
+                $mail->send();
                 return $this->redirect()->toRoute('convite-hora-extra/me');
             }
         }
