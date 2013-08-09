@@ -321,14 +321,17 @@ return array(
                 $config = $sm->get('Config');
                 $user = $sm->get('Auth')->getStorage()->read();
                 $conf = new Config($config['ldap-config']);
-                
+
                 $result = $ldap->search("(&(objectClass=user)(memberof=CN={$user['departamento']},OU=Grupos,OU=IRM,DC=irmservices,DC=com))", $conf->server->baseDn, \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
 
                 $companheiros = array();
                 foreach ($result as $item) {
-                    $companheiros[] = $item['displayname'][0];
+                    if (isset($item['mail'])) {
+                        $companheiros['name'][] = $item['displayname'][0];
+                        $companheiros['email'][] = $item['mail'][0];
+                       
+                    }
                 }
-                return $companheiros;
             },
         ),
     ),
