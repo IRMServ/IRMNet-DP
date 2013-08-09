@@ -158,6 +158,29 @@ class ConviteHoraExtraController extends AbstractActionController {
         $convite = $con->getById($id);
         $convite->setEntityManager($em);
 
+        if ($userdat['displayname'] == 'Rosemari Prandini') {
+            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_ROSE_NEGAR);
+            $mail->addFrom('webmaster@irmserv.com.br')
+                    ->addTo('prandini@irmserv.com.br')
+                    ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
+                    ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+
+
+            $mail->send();
+            $convite->setAprovadorose(2);
+        } else {
+            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_GESTOR_NEGAR);
+            $mail->addFrom('webmaster@irmserv.com.br')
+                    ->addTo($userdat['email'])
+                    ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
+                    ->setBody(array('gerente' => $store['displayname'], 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio, 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+
+
+            $mail->send();
+            $convite->setAprovadoger(2);
+        }
+
+        
         $convite->store();
         $auth = $this->getServiceLocator()->get('Auth')->getStorage();
         $userdata = $auth->read();

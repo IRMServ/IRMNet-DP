@@ -2,11 +2,11 @@
 <link rel="stylesheet" type="text/css" href="/css/datepicker.css"/>
 <script>
     $(document).ready(function() {
-     
+
         $('#my-select').multiSelect();
 
         $("table a").tooltip();
-         $("input[name='datainicio'],input[name='datafim']").datepicker({
+        $("input[name='datainicio'],input[name='datafim']").datepicker({
             format: 'dd/mm/yyyy'
         });
 
@@ -18,15 +18,17 @@
         <label>Data de início: <input type="text" name="datainicio" required/></label><br/>
         <label>Data de término: <input type="text" name="datafim" required /></label><br/>
         <label>Motivo: <textarea name="motivo" required ></textarea></label><br/>
-        
-    <select multiple="multiple" id="my-select" name="my-select[]">
-        <?php foreach ($this->users as $matricula => $nome): ?>
-            <option value="<?php echo $matricula.'-'.$nome; ?>"><?php echo $nome; ?></option>
-        <?php endforeach; ?>
-    </select> 
-    <div id="descri">
-    </div>
+
+        <select multiple="multiple" id="my-select" name="my-select[]">
+            <?php foreach ($this->users as $matricula => $nome): ?>
+                <option value="<?php echo $matricula . '-' . $nome; ?>"><?php echo $nome; ?></option>
+            <?php endforeach; ?>
+        </select> 
+        <div id="descri">
+        </div>
         <input type='submit' value='Enviar' class='btn btn-success'>
     </form>
-
+    <div class="alert alert-error">       
+        <strong>Importante!</strong> Conforme o artigo 59 da CLT, só é permitido ao colaborador o máximo de 10 horas na jornada diária de trabalho.
+    </div>
 </div>
