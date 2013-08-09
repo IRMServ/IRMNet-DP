@@ -113,7 +113,7 @@ class ConviteHoraExtraController extends AbstractActionController {
             $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_ROSE_APROVAR);
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo('prandini@irmserv.com.br')
-                    ->setSubject("[convite individual aprovado] Convite do dia {$convite->getDataregistro()}")
+                    ->setSubject("[convite aprovado] Convite do dia {$convite->getDataregistro()}")
                     ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
 
 
@@ -237,19 +237,22 @@ class ConviteHoraExtraController extends AbstractActionController {
     public function storegroupAction() {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
         $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_alternative');
-
+        $date = new \DateTime('now');
         $afb = new AnnotationBuilder();
         $che = new ConviteHoraExtra($this->getEntityManager());
         $form = $afb->createForm($che);
         $comp = array();
         $users = $this->getServiceLocator()->get('UsersDPPair');
-        foreach ($users as $u) {
+        $i = 0;
+
+        foreach ($users['name'] as $u) {
             $dadossgiquery = $em->createQuery("SELECT func.nom_Funcionario as nome,func.num_Matricula as matricula  FROM DP\Entity\Funcionarios func where func.nom_Funcionario like '{$u}' and   func.bl_Ativo=1 and func.num_Matricula<>0 ");
             if ($dadossgiquery->getResult()) {
                 $estado = $dadossgiquery->getResult();
-
-                $comp[$estado[0]['matricula']] = $estado[0]['nome'];
+                $email = isset($users['email'][$i]) ? $users['email'][$i] : '';
+                $comp[$estado[0]['matricula'] . '-' . $email] = $estado[0]['nome'];
             }
+            $i++;
         }
 
 
@@ -259,9 +262,15 @@ class ConviteHoraExtraController extends AbstractActionController {
             $data['datafim'] = new \DateTime(implode('-', array_reverse(explode('/', $data['datafim']))));
             $select = $data['my-select'];
             unset($data['my-select']);
-
+            $nomes = array();
+            $inicio = $data['datainicio'];
+            $fim = $data['datafim'];
+            $emails = array();
             foreach ($select as $func) {
-                list($matricula, $nome) = explode('-', $func);
+                list($matricula, $email, $nome) = explode('-', $func);
+                $nomes[] = $nome;
+                $emails[] = $email;
+
                 $che2 = new ConviteHoraExtra($this->getEntityManager());
                 $data['solicitante'] = $as['displayname'];
                 $data['nome'] = $nome;
@@ -273,9 +282,25 @@ class ConviteHoraExtraController extends AbstractActionController {
 
 
 
+
                 $che2->populate((array) $data);
                 $che2->store();
             }
+            foreach ($emails as $e) {
+                $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_COLETIVO);
+                $mail->addFrom('webmaster@irmserv.com.br')
+                        ->addTo($e)
+                        ->setSubject("[convite coletivo] Convite do dia {$date->format('d/m/Y')}")
+                        ->setBody(array('gerente' => $as['gerente'], 'aberto' => $date->format('d/m/Y'), 'sujeito' => $as['displayname'], 'inicio' => $inicio, 'fim' => $fim, 'motivo' => $data['motivo'], 'nomes' => implode('<br/>', $nomes)));
+                $mail->send();
+            }
+
+            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_COLETIVO_GESTOR_APROVAR);
+            $mail->addFrom('webmaster@irmserv.com.br')
+                    ->addTo($as['gerente-mail'])
+                    ->setSubject("[convite coletivo] Convite do dia {$date->format('d/m/Y')}")
+                    ->setBody(array('gerente' => $as['gerente'], 'aberto' => $date->format('d/m/Y'), 'sujeito' => $as['displayname'], 'inicio' => $inicio, 'fim' => $fim, 'motivo' => $data['motivo'], 'nomes' => implode('<br/>', $nomes)));
+            $mail->send();
             return $this->redirect()->toRoute('convite-hora-extra/me');
         }
         return new ViewModel(array('form' => $form, 'users' => $comp));
