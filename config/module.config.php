@@ -332,6 +332,7 @@ return array(
                        
                     }
                 }
+                 return $companheiros;
             },
         ),
     ),
