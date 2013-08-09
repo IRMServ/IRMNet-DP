@@ -160,7 +160,7 @@ class ConviteHoraExtraController extends AbstractActionController {
         $convite->setEntityManager($em);
 
         if ($userdat['displayname'] == 'Rosemari Prandini') {
-            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_ROSE_NEGAR);
+            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_ROSE_NEGAR);
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($userdat['email'])
                     ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
@@ -170,7 +170,7 @@ class ConviteHoraExtraController extends AbstractActionController {
             $mail->send();
             $convite->setAprovadorose(2);
         } else {
-            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_GESTOR_NEGAR);
+            $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_GESTOR_NEGAR);
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($userdat['email'])
                     ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
