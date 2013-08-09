@@ -151,7 +151,8 @@ class ConviteHoraExtraController extends AbstractActionController {
     }
 
     public function negarAction() {
-
+ $auth = $this->getServiceLocator()->get('Auth')->getStorage();
+   $userdat = $auth->read();
         $id = $this->params()->fromRoute('id');
         $em = $this->getEntityManager();
         $con = new Convitehoraextra($em);
@@ -161,7 +162,7 @@ class ConviteHoraExtraController extends AbstractActionController {
         if ($userdat['displayname'] == 'Rosemari Prandini') {
             $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_ROSE_NEGAR);
             $mail->addFrom('webmaster@irmserv.com.br')
-                    ->addTo('prandini@irmserv.com.br')
+                    ->addTo($userdat['email'])
                     ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
                     ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
 
