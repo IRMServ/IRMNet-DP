@@ -165,8 +165,6 @@ class ConviteHoraExtraController extends AbstractActionController {
                     ->addTo($userdat['email'])
                     ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
                     ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
-
-
             $mail->send();
             $convite->setAprovadorose(2);
         } else {
