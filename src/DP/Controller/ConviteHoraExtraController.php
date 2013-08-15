@@ -94,7 +94,7 @@ class ConviteHoraExtraController extends AbstractActionController {
     public function aprovedmeAction() {
         $as = $this->getServiceLocator()->get('Auth')->getStorage()->read();
         $em = $this->getEntityManager();
-        $lista = $as['displayname'] == 'Rosemari Prandini' ? $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where   Convite.aprovadorose = 0  order by Convite.idconvitehoraextra DESC") : $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$as['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
+        $lista = $as['displayname'] == 'ROSEMARI DE ARRUDA PRANDINI' ? $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where   Convite.aprovadorose = 0  order by Convite.idconvitehoraextra DESC") : $em->createQuery("SELECT Convite FROM DP\Entity\ConviteHoraExtra Convite where  Convite.supervisor='{$as['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
         $list = $lista->getResult();
 
         return new ViewModel(array('lista' => $list));
