@@ -109,7 +109,7 @@ class ConviteHoraExtraController extends AbstractActionController {
         $convite = $con->getById($id);
         $convite->setEntityManager($em);
         $userdat = $auth->read();
-        if ($userdat['displayname'] == 'Rosemari Prandini') {
+        if ($userdat['displayname'] == 'ROSEMARI DE ARRUDA PRANDINI') {
             $mail = new MailService($this->getServiceLocator(), ServiceTemplate::DP_CONVITE_INDIVIDUAL_ROSE_APROVAR);
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo('prandini@irmserv.com.br')
