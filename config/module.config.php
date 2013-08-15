@@ -287,23 +287,12 @@ return array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'CHEAprov' => function($sm) {
                 $user = $sm->get('Auth')->getStorage()->read();
-
                 if (isset($user['displayname'])) {
                     $em = $sm->get('doctrine.entitymanager.orm_default');
-
-                    $convites = $em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where  Convite.supervisor like '{$user['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
+                    $convites = $user['displayname'] == 'ROSEMARI DE ARRUDA PRANDINI' ? $em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where   Convite.aprovadorose = 0  order by Convite.idconvitehoraextra DESC"):$em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where  Convite.supervisor like '{$user['displayname']}' and Convite.aprovadoger = 0  order by Convite.idconvitehoraextra DESC");
                     $result = $convites->getResult();
-
                     return count($result);
-                }
-                if (isset($user['displayname']) && $user['displayname'] == 'Rosemari Prandini') {
-                    $em = $sm->get('doctrine.entitymanager.orm_default');
-
-                    $convites = $em->createQuery("SELECT Convite FROM DP\Entity\Convitehoraextra Convite where   Convite.aprovadorose = 0  order by Convite.idconvitehoraextra DESC");
-                    $result = $convites->getResult();
-
-                    return count($result);
-                }
+                }               
                 return 0;
             },
             'FuncionarioPair' => function($sm) {
