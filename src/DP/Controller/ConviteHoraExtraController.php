@@ -114,7 +114,7 @@ class ConviteHoraExtraController extends AbstractActionController {
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo('prandini@irmserv.com.br')
                     ->setSubject("[convite aprovado] Convite do dia {$convite->getDataregistro()}")
-                    ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+                    ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $convite->getNome(), 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
 
 
             $mail->send();
@@ -124,7 +124,7 @@ class ConviteHoraExtraController extends AbstractActionController {
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($userdat['email'])
                     ->setSubject("[convite individual] Convite do dia {$convite->getDataregistro()}")
-                    ->setBody(array('gerente' => $store['displayname'], 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio, 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+                    ->setBody(array('gerente' => $userdat['displayname'], 'aberto' => $convite->getDataregistro(), 'sujeito' => $convite->getNome(), 'inicio' => $convite->getDatainicio, 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
 
 
             $mail->send();
