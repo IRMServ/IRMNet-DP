@@ -75,7 +75,7 @@ class Convitehoraextra {
      * @var string
      * @Annotation\AllowEmpty(true)
      * @Annotation\Type("Zend\Form\Element\Hidden")
-     * @ORM\Column(name="nome", type="string", length=45, nullable=true)
+     * @ORM\Column(name="emailsolicitante", type="string", length=45, nullable=true)
      */
     public $emailsolicitante;
 
