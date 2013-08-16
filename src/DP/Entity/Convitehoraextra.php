@@ -71,6 +71,13 @@ class Convitehoraextra {
      * @ORM\Column(name="nome", type="string", length=45, nullable=false)
      */
     public $nome;
+    /**
+     * @var string
+     * @Annotation\AllowEmpty(true)
+     * @Annotation\Type("Zend\Form\Element\Hidden")
+     * @ORM\Column(name="nome", type="string", length=45, nullable=true)
+     */
+    public $emailsolicitante;
 
     /**
      * @var string
@@ -132,8 +139,15 @@ class Convitehoraextra {
      * @Annotation\Attributes({"value":"Enviar","class":"btn btn-success"})
      */
     public $submit;
+    public function getEmailsolicitante() {
+        return $this->emailsolicitante;
+    }
 
-    public function getIdconvitehoraextra() {
+    public function setEmailsolicitante($emailsolicitante) {
+        $this->emailsolicitante = $emailsolicitante;
+    }
+
+        public function getIdconvitehoraextra() {
         return $this->idconvitehoraextra;
     }
 
@@ -237,6 +251,7 @@ class Convitehoraextra {
         $this->setAprovadoger($data['aprovadoger']);
         $this->setAprovadorose($data['aprovadorose']);
         $this->setSolicitante($data['solicitante']);
+        $this->setEmailsolicitante($data['emailsolicitante']);
     }
 
     public function getAll() {

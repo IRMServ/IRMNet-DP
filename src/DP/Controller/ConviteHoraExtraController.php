@@ -151,8 +151,8 @@ class ConviteHoraExtraController extends AbstractActionController {
     }
 
     public function negarAction() {
- $auth = $this->getServiceLocator()->get('Auth')->getStorage();
-   $userdat = $auth->read();
+        $auth = $this->getServiceLocator()->get('Auth')->getStorage();
+        $userdat = $auth->read();
         $id = $this->params()->fromRoute('id');
         $em = $this->getEntityManager();
         $con = new Convitehoraextra($em);
@@ -164,7 +164,7 @@ class ConviteHoraExtraController extends AbstractActionController {
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($userdat['email'])
                     ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
-                    ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+                    ->setBody(array('gerente' => $convite->getSupervisor(), 'aberto' => $convite->getDataregistro(), 'sujeito' => $convite->getNome(), 'inicio' => $convite->getDatainicio(), 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
             $mail->send();
             $convite->setAprovadorose(2);
         } else {
@@ -172,16 +172,16 @@ class ConviteHoraExtraController extends AbstractActionController {
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($userdat['email'])
                     ->setSubject("[convite negado] Convite do dia {$convite->getDataregistro()}")
-                    ->setBody(array('gerente' => $store['displayname'], 'aberto' => $convite->getDataregistro(), 'sujeito' => $store['displayname'], 'inicio' => $convite->getDatainicio, 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
+                    ->setBody(array('gerente' => $userdat['displayname'], 'aberto' => $convite->getDataregistro(), 'sujeito' => $convite->getNome(), 'inicio' => $convite->getDatainicio, 'fim' => $convite->getDatafim(), 'motivo' => $convite->getMotivo()));
 
 
             $mail->send();
             $convite->setAprovadoger(2);
         }
 
-        
+
         $convite->store();
-        $auth = $this->getServiceLocator()->get('Auth')->getStorage();
+     
         $userdata = $auth->read();
         $user = array();
         $user['displayname'] = $userdata['displayname'];
@@ -222,6 +222,7 @@ class ConviteHoraExtraController extends AbstractActionController {
 
                 $data['nome'] = $as['displayname'];
                 $data['solicitante'] = $as['displayname'];
+                $data['emailsolicitante'] = $as['email'];
                 $data['supervisor'] = $as['gerente'];
                 $data['lido'] = 0;
                 $data['aprovadoger'] = 0;
@@ -295,6 +296,7 @@ class ConviteHoraExtraController extends AbstractActionController {
 
                 $che2 = new ConviteHoraExtra($this->getEntityManager());
                 $data['solicitante'] = $as['displayname'];
+                $data['emailsolicitante'] = $as['email'];
                 $data['nome'] = $nome;
                 $data['matricula'] = $matricula;
                 $data['supervisor'] = $as['gerente'];
